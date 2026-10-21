@@ -1,0 +1,160 @@
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  width: 100%;
+  min-width: 320px;
+  min-height: 100%;
+  margin: 0;
+}
+
+body {
+  overflow: hidden;
+}
+
+.cyber-background {
+  --mouse-x: 50%;
+  --mouse-y: 45%;
+  --grid-x: 0px;
+  --grid-y: 0px;
+  --grid-rotate: 0deg;
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  isolation: isolate;
+  cursor: crosshair;
+  background:
+    linear-gradient(
+      90deg,
+      transparent 49.9%,
+      rgba(255, 255, 255, 0.025) 50%,
+      transparent 50.1%
+    ),
+    linear-gradient(135deg, #090b0d 0%, #0c0e10 46%, #060708 100%);
+}
+
+.ambient-light {
+  position: absolute;
+  z-index: -3;
+  inset: -15%;
+  pointer-events: none;
+  background:
+    radial-gradient(
+      circle 520px at var(--mouse-x) var(--mouse-y),
+      rgba(255, 50, 71, 0.12),
+      transparent 58%
+    ),
+    radial-gradient(
+      circle 700px at 73% 52%,
+      rgba(81, 114, 124, 0.09),
+      transparent 62%
+    );
+  transition: background 80ms linear;
+}
+
+.perspective-grid {
+  position: absolute;
+  z-index: -2;
+  left: -25%;
+  right: -25%;
+  bottom: -31%;
+  height: 78%;
+  pointer-events: none;
+  opacity: 0.22;
+  background-image:
+    linear-gradient(rgba(125, 143, 148, 0.19) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(125, 143, 148, 0.19) 1px, transparent 1px);
+  background-size: 54px 54px;
+  transform-origin: center 80%;
+  transform: perspective(560px) rotateX(59deg) rotateY(var(--grid-rotate))
+    translate3d(var(--grid-x), var(--grid-y), 0);
+  mask-image: linear-gradient(to bottom, transparent 3%, #000 44%, #000 100%);
+  transition: transform 150ms ease-out;
+  animation: grid-drift 8s linear infinite;
+}
+
+.red-horizon {
+  position: absolute;
+  z-index: -1;
+  left: 12%;
+  right: 12%;
+  bottom: 37%;
+  height: 1px;
+  pointer-events: none;
+  opacity: 0.45;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 50, 71, 0.9),
+    transparent
+  );
+  box-shadow: 0 0 22px rgba(255, 50, 71, 0.35);
+  animation: horizon-pulse 3.6s ease-in-out infinite;
+}
+
+.scanlines {
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.08;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent 3px,
+    rgba(255, 255, 255, 0.07) 4px
+  );
+}
+
+.noise {
+  position: absolute;
+  z-index: 3;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.025;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.9'/%3E%3C/svg%3E");
+}
+
+@keyframes grid-drift {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 0 54px;
+  }
+}
+
+@keyframes horizon-pulse {
+  0%,
+  100% {
+    opacity: 0.25;
+    transform: scaleX(0.92);
+  }
+  50% {
+    opacity: 0.55;
+    transform: scaleX(1);
+  }
+}
+
+@keyframes status-pulse {
+  50% {
+    opacity: 0.35;
+    box-shadow: 0 0 2px #ff3247;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .perspective-grid,
+  .red-horizon {
+    animation: none;
+  }
+
+  .perspective-grid {
+    transform: perspective(560px) rotateX(59deg);
+  }
+  
+}
