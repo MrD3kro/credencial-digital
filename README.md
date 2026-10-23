@@ -1,4 +1,4 @@
 
 # Deploy de la pagina
 
-https://goritdude.github.io/credencial-digital/
+https://mrd3kro.github.io/credencial-digital/
